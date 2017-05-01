@@ -14,9 +14,11 @@ function split (html) {
     var style = styles[i]
     var host = style.getAttribute('data-host')
     if (!host) return next(++i)
-    style.parentNode.removeChild(style)
-    var element = component.querySelector(host)
+    var element = !component.matches(host) ?
+      component.querySelector(host) :
+      component
     if (!element) return next(++i)
+    style.parentNode.removeChild(style)
     hosts[fmt(host)] = {
       html: stripped(element.outerHTML),
       css: stripped(scope(style.textContent, host))
